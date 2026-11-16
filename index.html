@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gyan Automation</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        --primary-bg:#f4f7f6;
+        --white:#ffffff;
+        --text-dark:#1a1a1a;
+        --text-gray:#7a7a7a;
+        --border-color:#eef2f5;
+        --shadow:0 8px 24px rgba(0,0,0,0.06);
+        --shadow-hover:0 12px 30px rgba(0,0,0,0.12);
+        --transition:all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+        --radius:20px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;-webkit-tap-highlight-color:transparent;}
+
+    body{
+        background:#e2e8f0;display:flex;justify-content:center;align-items:center;
+        min-height:100vh;overflow:hidden;
+    }
+
+    .app-container{
+        width:100%;max-width:480px;height:100vh;max-height:900px;
+        background:var(--primary-bg);position:relative;overflow:hidden;
+        box-shadow:0 0 40px rgba(0,0,0,0.15);
+    }
+
+    /* ============================================================
+       AUTH SCREEN (ANIMATED / PROFESSIONAL)
+    ============================================================ */
+    #auth-screen{
+        position:absolute;inset:0;z-index:1000;overflow:hidden;
+        display:flex;align-items:center;justify-content:center;padding:22px;
+        background:linear-gradient(140deg,#0b1220 0%,#0f172a 45%,#0c4a6e 100%);
+        transition:opacity .5s ease, transform .5s ease;
+    }
+    #auth-screen.hide{opacity:0;pointer-events:none;transform:scale(1.04);}
+
+    .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;}
+    .blob1{width:260px;height:260px;background:#0ea5e9;top:-70px;left:-80px;animation:blobMove 14s ease-in-out infinite;}
+    .blob2{width:220px;height:220px;background:#7c3aed;bottom:-50px;right:-70px;animation:blobMove 18s ease-in-out infinite reverse;}
+    .blob3{width:170px;height:170px;background:#10b981;top:46%;left:58%;animation:blobMove 16s ease-in-out infinite 2s;}
+    @keyframes blobMove{
+        0%,100%{transform:translate(0,0) scale(1);}
+        33%{transform:translate(30px,-40px) scale(1.15);}
+        66%{transform:translate(-25px,25px) scale(.9);}
+    }
+
+    .auth-card{
+        position:relative;width:100%;max-width:380px;
+        background:rgba(255,255,255,0.075);
+        backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+        border:1px solid rgba(255,255,255,0.14);
+        border-radius:26px;padding:28px 24px 24px;
+        box-shadow:0 25px 60px rgba(0,0,0,0.45);
+        animation:cardIn .75s cubic-bezier(.16,1,.3,1);
+    }
+    @keyframes cardIn{from{opacity:0;transform:translateY(34px) scale(.96);}to{opacity:1;transform:none;}}
+
+    .auth-logo{
+        width:74px;height:74px;border-radius:50%;margin:0 auto 14px;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 12px 30px rgba(14,165,233,.45);
+        animation:logoFloat 3.4s ease-in-out infinite;
+    }
+    .auth-logo i{font-size:32px;color:#fff;}
+    @keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+
+    .auth-title{text-align:center;font-size:21px;font-weight:800;color:#fff;letter-spacing:-.4px;}
+    .auth-sub{text-align:center;font-size:11.5px;color:#94a3b8;margin-top:3px;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:22px;}
+
+    .auth-tabs{
+        position:relative;display:flex;background:rgba(255,255,255,.07);
+        border:1px solid rgba(255,255,255,.12);border-radius:14px;
+        padding:4px;margin-bottom:20px;
+    }
+    .auth-tab{
+        flex:1;text-align:center;padding:10px;font-size:13px;font-weight:600;
+        color:#94a3b8;cursor:pointer;position:relative;z-index:2;transition:color .3s;
+    }
+    .auth-tab.active{color:#fff;}
+    .auth-pill{
+        position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);border-radius:11px;
+        transition:transform .38s cubic-bezier(.16,1,.3,1);z-index:1;
+        box-shadow:0 4px 14px rgba(37,99,235,.45);
+    }
+    .auth-tabs[data-active="register"] .auth-pill{transform:translateX(100%);}
+
+    .auth-field{position:relative;margin-bottom:14px;}
+    .auth-field i{
+        position:absolute;left:16px;top:50%;transform:translateY(-50%);
+        color:#64748b;font-size:14px;transition:color .3s;pointer-events:none;
+    }
+    .auth-field input{
+        width:100%;padding:15px 16px 15px 46px;
+        background:rgba(255,255,255,.07);
+        border:1.5px solid rgba(255,255,255,.14);
+        border-radius:14px;color:#fff;font-size:13.5px;outline:none;
+        transition:all .3s;font-family:inherit;
+    }
+    .auth-field input::placeholder{color:#64748b;}
+    .auth-field input:focus{border-color:#38bdf8;background:rgba(255,255,255,.12);box-shadow:0 0 0 4px rgba(56,189,248,.15);}
+    .auth-field input:focus ~ i{color:#38bdf8;}
+
+    .auth-forgot{text-align:right;font-size:11.5px;color:#38bdf8;font-weight:500;margin:-4px 0 16px;cursor:pointer;}
+    .auth-forgot:hover{text-decoration:underline;}
+
+    .auth-btn{
+        width:100%;padding:15px;border:none;border-radius:14px;cursor:pointer;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;
+        font-size:14.5px;font-weight:600;font-family:inherit;
+        position:relative;overflow:hidden;transition:all .3s;
+        display:flex;align-items:center;justify-content:center;gap:9px;
+    }
+    .auth-btn::after{
+        content:'';position:absolute;top:0;left:-110%;width:100%;height:100%;
+        background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+        transition:left .65s;
+    }
+    .auth-btn:hover::after{left:110%;}
+    .auth-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(37,99,235,.45);}
+    .auth-btn:disabled{opacity:.75;cursor:not-allowed;transform:none;}
+
+    .auth-msg{
+        font-size:12px;text-align:center;min-height:17px;margin-top:13px;
+        opacity:0;transition:opacity .3s;font-weight:500;
+    }
+    .auth-msg.show{opacity:1;}
+    .auth-msg.error{color:#f87171;}
+    .auth-msg.success{color:#4ade80;}
+
+    .auth-hint{
+        text-align:center;font-size:10.5px;color:#64748b;margin-top:14px;
+        display:flex;align-items:center;justify-content:center;gap:6px;
+    }
+
+    /* ============================================================
+       MAIN APP
+    ============================================================ */
+    #app-screen{
+        position:absolute;inset:0;display:flex;flex-direction:column;
+        opacity:0;pointer-events:none;transition:var(--transition);
+    }
+    #app-screen.active{opacity:1;pointer-events:auto;}
+
+    .app-header{
+        background:rgba(255,255,255,.85);
+        backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+        padding:15px 20px;display:flex;align-items:center;justify-content:space-between;
+        position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,.03);
+    }
+    .header-left{display:flex;align-items:center;gap:15px;}
+    .menu-icon,.bell-icon{font-size:20px;color:#334155;cursor:pointer;transition:transform .2s;}
+    .menu-icon:active,.bell-icon:active{transform:scale(.85);}
+    .app-title{font-size:17px;font-weight:700;color:#0f172a;letter-spacing:-.5px;}
+
+    .main-content{
+        flex:1;display:flex;flex-direction:column;overflow-y:auto;
+        position:relative;min-height:0;scroll-behavior:smooth;
+        -ms-overflow-style:none;scrollbar-width:none;
+    }
+    .main-content::-webkit-scrollbar{display:none;}
+
+    .view-section{display:none;padding:15px;padding-bottom:100px;animation:slideUp .4s cubic-bezier(.16,1,.3,1);}
+    .view-section.active{display:block;}
+    @keyframes slideUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+    /* Greeting */
+    .greeting-area{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+    .greeting h2{font-size:21px;font-weight:700;color:#0f172a;margin-bottom:2px;}
+    .greeting p{font-size:12.5px;color:#64748b;}
+    .profile-avatar{
+        width:45px;height:45px;border-radius:50%;cursor:pointer;
+        background:url('https://cdn-icons-png.flaticon.com/512/3135/3135715.png') center/cover;
+        border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.12);
+    }
+
+    /* ============ SLIDER (IMAGE ONLY / SHARP CORNERS) ============ */
+    .slider-wrapper{
+        width:100%;height:190px;overflow:hidden;position:relative;
+        margin-bottom:20px;box-shadow:0 10px 25px rgba(0,0,0,.10);
+        border-radius:0;background:#0f172a;
+    }
+    .slider-track{display:flex;height:100%;transition:transform .7s cubic-bezier(.22,1,.36,1);}
+    .slide-img{
+        min-width:100%;height:100%;object-fit:cover;display:block;
+        border-radius:0;user-select:none;pointer-events:none;
+    }
+    .slider-dots{position:absolute;bottom:12px;right:14px;display:flex;gap:6px;z-index:2;}
+    .dot{
+        width:6px;height:6px;background:rgba(255,255,255,.45);border-radius:10px;
+        cursor:pointer;transition:all .3s;
+    }
+    .dot.active{background:#fff;width:18px;}
+
+    /* Section title */
+    .section-title{
+        font-size:15.5px;font-weight:700;color:#0f172a;margin-bottom:14px;
+        display:flex;align-items:center;gap:8px;
+    }
+
+
+    /* ============ HOME GRID (APP STYLE TILES) ============ */
+    .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .tile{
+        position:relative;overflow:hidden;border:none;cursor:pointer;color:#fff;font-family:inherit;
+        min-height:132px;border-radius:20px;padding:14px 10px;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+        box-shadow:0 8px 20px rgba(15,23,42,.14);
+        transition:transform .25s cubic-bezier(.25,.8,.25,1),box-shadow .25s;
+        text-align:center;
+    }
+    .tile::before{
+        content:'';position:absolute;width:120px;height:120px;border-radius:50%;
+        background:rgba(255,255,255,.14);top:-44px;right:-36px;pointer-events:none;
+    }
+    .tile::after{
+        content:'';position:absolute;width:80px;height:80px;border-radius:50%;
+        background:rgba(255,255,255,.09);bottom:-30px;left:-24px;pointer-events:none;
+    }
+    .tile:hover{transform:translateY(-3px);box-shadow:0 14px 28px rgba(15,23,42,.2);}
+    .tile:active{transform:scale(.96);}
+    .tile-ico{
+        position:relative;z-index:1;width:56px;height:56px;border-radius:18px;
+        background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);
+        display:flex;align-items:center;justify-content:center;font-size:25px;
+        box-shadow:0 6px 14px rgba(0,0,0,.12);
+    }
+    .tile-lbl{position:relative;z-index:1;font-size:14px;font-weight:700;letter-spacing:.1px;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,.18);}
+    .t-orange{background:linear-gradient(145deg,#ff9a4d,#f2691b);}
+    .t-blue{background:linear-gradient(145deg,#6aa6f5,#3d7fe0);}
+    .t-cyan{background:linear-gradient(145deg,#22d3ee,#0aa5c7);}
+    .t-green{background:linear-gradient(145deg,#2fd35b,#14a83a);}
+    .t-royal{background:linear-gradient(145deg,#2f7bf0,#1553c9);}
+    .t-yellow{background:linear-gradient(145deg,#f7c60f,#e29a00);}
+    .t-pink{background:linear-gradient(145deg,#ff3d86,#e0105f);}
+    .t-deep{background:linear-gradient(145deg,#ff8433,#e4570c);}
+
+    .sub-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .back-btn{
+        width:40px;height:40px;border-radius:12px;border:none;background:#fff;color:#0f172a;
+        box-shadow:var(--shadow);cursor:pointer;font-size:15px;flex-shrink:0;
+        display:flex;align-items:center;justify-content:center;transition:var(--transition);
+    }
+    .back-btn:active{transform:scale(.9);}
+    .sub-head .section-title{margin:0;}
+    .link-list{display:flex;flex-direction:column;gap:12px;}
+    .link-item{
+        display:flex;align-items:center;gap:14px;background:#fff;border:none;width:100%;
+        border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;
+        font-family:inherit;text-align:left;transition:var(--transition);
+    }
+    .link-item:active{transform:scale(.98);}
+    .link-ico{width:44px;height:44px;border-radius:14px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .link-name{font-size:14px;font-weight:600;color:#0f172a;flex:1;}
+    .link-item>.fa-chevron-right{color:#cbd5e1;font-size:12px;}
+
+    /* ============ BATCH CARDS ============ */
+    .batch-list{display:flex;flex-direction:column;gap:16px;}
+    .batch-card{
+        background:#fff;border-radius:var(--radius);overflow:hidden;
+        box-shadow:var(--shadow);transition:var(--transition);
+    }
+    .batch-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);}
+    .batch-img{
+        height:150px;background-size:cover;background-position:center;position:relative;
+        background-color:#e2e8f0;
+    }
+    .ribbon.free{
+        position:absolute;top:12px;left:12px;background:#10b981;color:#fff;
+        font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.6px;
+    }
+    .batch-body{padding:16px;}
+    .batch-title{font-size:15px;font-weight:700;color:#0f172a;line-height:1.3;margin-bottom:7px;}
+    .batch-meta{font-size:11.5px;color:#64748b;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+    .batch-desc{
+        font-size:11.5px;color:#94a3b8;line-height:1.55;margin-bottom:14px;
+        display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .batch-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .batch-price{font-size:18px;font-weight:800;color:#0f172a;}
+    .btn-buy{
+        padding:12px 20px;border:none;border-radius:12px;cursor:pointer;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;
+        font-weight:600;font-size:12.5px;font-family:inherit;transition:all .3s;
+        display:inline-flex;align-items:center;gap:6px;
+    }
+    .btn-buy:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(37,99,235,.35);}
+    .btn-buy:active{transform:scale(.96);}
+    .btn-buy.owned{background:#e8f7ef;color:#059669;cursor:pointer;box-shadow:none;}
+    .btn-buy.owned:hover{transform:none;box-shadow:none;}
+
+    /* ============ MY COURSES ============ */
+    .course-card{
+        background:#fff;border-radius:var(--radius);overflow:hidden;
+        box-shadow:var(--shadow);margin-bottom:18px;transition:var(--transition);
+    }
+    .course-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);}
+    .course-image{width:100%;height:160px;background:#e2e8f0;background-size:cover;background-position:center;}
+    .course-details{padding:16px;}
+    .course-title{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:7px;line-height:1.3;}
+    .course-expiry{font-size:12px;color:#64748b;margin-bottom:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .status{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+    .status.ok{background:#dcfce7;color:#059669;}
+    .status.exp{background:#fee2e2;color:#dc2626;}
+    .btn-view{
+        width:100%;padding:13px;background:#0f172a;color:#fff;border:none;border-radius:12px;
+        font-size:13.5px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:inherit;
+    }
+    .btn-view:active{transform:scale(.98);}
+
+    /* ============ EMPTY STATE ============ */
+    .empty-state{
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        padding:46px 20px;text-align:center;animation:slideUp .6s ease;
+    }
+    .empty-state i{font-size:64px;color:#cbd5e1;margin-bottom:16px;}
+    .empty-state h3{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:5px;}
+    .empty-state p{font-size:12.5px;color:#64748b;}
+
+    /* ============ SEARCH BAR ============ */
+    .search-bar{
+        background:#fff;border-radius:14px;padding:13px 18px;display:flex;
+        align-items:center;gap:12px;margin-bottom:20px;box-shadow:var(--shadow);
+    }
+    .search-bar input{border:none;outline:none;flex:1;font-size:13.5px;color:#0f172a;font-family:inherit;}
+
+    /* ============ CHAT ============ */
+    #chat-view{padding:0;}
+    #chat-view.active{display:flex;flex-direction:column;flex:1;min-height:0;padding-bottom:75px;}
+    .chat-messages{
+        flex:1;min-height:0;overflow-y:auto;padding:20px 16px;
+        display:flex;flex-direction:column;gap:10px;
+    }
+    .chat-messages::-webkit-scrollbar{display:none;}
+    .chat-empty{
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        color:#94a3b8;gap:10px;padding:30px;text-align:center;margin:auto;
+    }
+    .chat-empty i{font-size:42px;color:#cbd5e1;}
+    .chat-empty p{font-size:13px;}
+    .msg{display:flex;flex-direction:column;max-width:82%;animation:msgIn .3s ease;}
+    @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+    .msg.me{align-self:flex-end;align-items:flex-end;}
+    .msg.them{align-self:flex-start;align-items:flex-start;}
+    .bubble{padding:11px 15px;border-radius:16px;font-size:13.5px;line-height:1.45;word-break:break-word;}
+    .msg.me .bubble{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;border-bottom-right-radius:4px;}
+    .msg.them .bubble{background:#fff;color:#0f172a;border-bottom-left-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.05);}
+    .msg-time{font-size:9.5px;color:#94a3b8;margin-top:4px;padding:0 4px;}
+
+    .chat-input-area{
+        background:#fff;padding:11px 16px;display:flex;align-items:center;gap:11px;
+        border-top:1px solid var(--border-color);width:100%;
+    }
+    .chat-input-area input{
+        flex:1;border:none;outline:none;font-size:13.5px;padding:12px 16px;
+        background:#f1f5f9;border-radius:25px;font-family:inherit;
+    }
+    .chat-input-area i{font-size:19px;color:#0ea5e9;cursor:pointer;transition:transform .2s;}
+    .chat-input-area i:active{transform:scale(.85);}
+
+    /* ============ FAB ============ */
+    .fab-whatsapp{
+        position:absolute;bottom:85px;right:20px;width:55px;height:55px;
+        background:#25D366;color:#fff;border-radius:50%;
+        display:flex;align-items:center;justify-content:center;font-size:28px;
+        box-shadow:0 6px 16px rgba(37,211,102,.4);cursor:pointer;z-index:99;
+        transition:transform .3s cubic-bezier(.175,.885,.32,1.275);
+        animation:pulseWhatsapp 2s infinite;
+    }
+    .fab-whatsapp:hover{transform:scale(1.1) rotate(10deg);}
+    @keyframes pulseWhatsapp{
+        0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}
+        70%{box-shadow:0 0 0 15px rgba(37,211,102,0);}
+        100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}
+    }
+
+    /* ============ BOTTOM NAV ============ */
+    .bottom-nav{
+        position:absolute;bottom:0;left:0;width:100%;
+        background:rgba(255,255,255,.9);
+        backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+        display:flex;justify-content:space-around;padding:10px 0 15px;
+        box-shadow:0 -4px 20px rgba(0,0,0,.05);z-index:100;
+        border-top:1px solid rgba(0,0,0,.03);
+    }
+    .nav-item{
+        display:flex;flex-direction:column;align-items:center;color:#94a3b8;
+        font-size:9.5px;font-weight:500;cursor:pointer;transition:var(--transition);
+        text-decoration:none;padding:5px 10px;border-radius:12px;
+    }
+    .nav-item i{font-size:19px;margin-bottom:4px;transition:transform .3s;}
+    .nav-item.active{color:#0ea5e9;}
+    .nav-item.active i{transform:translateY(-4px) scale(1.1);text-shadow:0 4px 10px rgba(14,165,233,.4);}
+
+    /* ============ DRAWER ============ */
+    .drawer-overlay{
+        position:absolute;inset:0;background:rgba(15,23,42,.6);
+        backdrop-filter:blur(4px);z-index:200;opacity:0;pointer-events:none;transition:var(--transition);
+    }
+    .drawer-overlay.active{opacity:1;pointer-events:auto;}
+    .drawer{
+        position:absolute;top:0;left:-85%;width:85%;height:100%;background:var(--white);
+        z-index:201;transition:var(--transition);padding:25px 20px;
+        display:flex;flex-direction:column;
+        border-top-right-radius:30px;border-bottom-right-radius:30px;
+    }
+    .drawer.active{left:0;box-shadow:10px 0 30px rgba(0,0,0,.15);}
+    .drawer-profile{
+        display:flex;flex-direction:column;align-items:flex-start;margin-bottom:22px;
+        padding-bottom:22px;border-bottom:1px solid var(--border-color);
+    }
+    .drawer-profile img{
+        width:62px;height:62px;border-radius:50%;border:3px solid #0ea5e9;
+        margin-bottom:11px;box-shadow:0 4px 10px rgba(14,165,233,.2);
+    }
+    .drawer-profile h2{font-size:17px;font-weight:700;color:#0f172a;}
+    .drawer-menu{list-style:none;flex:1;overflow-y:auto;}
+    .drawer-menu li{
+        padding:13px 12px;display:flex;align-items:center;gap:15px;font-size:13.5px;
+        font-weight:500;color:#475569;cursor:pointer;border-radius:12px;
+        transition:var(--transition);margin-bottom:4px;
+    }
+    .drawer-menu li:hover{background:#f1f5f9;color:#0ea5e9;padding-left:18px;}
+    .drawer-menu li i{width:22px;text-align:center;font-size:15px;}
+    .drawer-footer{text-align:center;padding-top:18px;border-top:1px solid var(--border-color);}
+    .drawer-footer p{font-size:11.5px;color:#94a3b8;margin-bottom:10px;}
+    .drawer-footer i{font-size:25px;color:#25D366;cursor:pointer;transition:transform .2s;}
+    .drawer-footer i:hover{transform:scale(1.15);}
+
+    /* ============================================================
+       ADMIN PANEL
+    ============================================================ */
+    #admin-screen{
+        position:absolute;inset:0;background:var(--primary-bg);
+        display:none;flex-direction:column;z-index:900;
+    }
+    #admin-screen.active{display:flex;}
+
+    .admin-chip{
+        display:inline-flex;align-items:center;gap:6px;background:#0f172a;color:#fff;
+        font-size:9.5px;font-weight:700;padding:5px 10px;border-radius:20px;letter-spacing:.8px;
+    }
+    .admin-tabs{display:flex;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.04);padding:0 8px;}
+    .admin-tab{
+        flex:1;text-align:center;padding:14px 4px;font-size:11.5px;font-weight:600;
+        color:#94a3b8;cursor:pointer;border-bottom:2.5px solid transparent;
+        transition:.3s;display:flex;align-items:center;justify-content:center;gap:6px;
+    }
+    .admin-tab.active{color:#0ea5e9;border-bottom-color:#0ea5e9;}
+    .badge{
+        background:#ef4444;color:#fff;font-size:9px;font-weight:700;
+        padding:1px 6px;border-radius:10px;display:none;
+    }
+    .admin-content{flex:1;overflow-y:auto;padding:16px;min-height:0;}
+    .admin-content::-webkit-scrollbar{display:none;}
+    .admin-pane{display:none;animation:slideUp .3s ease;}
+    .admin-pane.active{display:block;}
+
+    .admin-card{
+        background:#fff;border-radius:18px;padding:18px;
+        box-shadow:var(--shadow);margin-bottom:16px;
+    }
+    .admin-card h3{
+        font-size:13.5px;font-weight:700;color:#0f172a;margin-bottom:14px;
+        display:flex;align-items:center;gap:8px;
+    }
+    .f-input{
+        width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:12px;
+        font-size:12.5px;font-family:inherit;outline:none;margin-bottom:11px;
+        transition:.2s;background:#f8fafc;resize:none;color:#0f172a;
+    }
+    .f-input:focus{border-color:#0ea5e9;background:#fff;box-shadow:0 0 0 3px rgba(14,165,233,.1);}
+    .f-row{display:flex;gap:10px;}
+    .f-row > *{flex:1;min-width:0;}
+    .f-label{font-size:11px;font-weight:600;color:#64748b;display:block;margin-bottom:6px;padding-left:2px;}
+
+    .admin-btn{
+        width:100%;padding:13px;border:none;border-radius:12px;cursor:pointer;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;
+        font-size:13px;font-weight:600;font-family:inherit;transition:.3s;
+        display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .admin-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.35);}
+
+    .admin-batch-row,.student-row,.conv-item{
+        display:flex;align-items:center;gap:12px;padding:10px 0;
+        border-bottom:1px solid #f1f5f9;
+    }
+    .admin-batch-row:last-child,.student-row:last-child,.conv-item:last-child{border-bottom:none;}
+    .admin-batch-thumb{
+        width:52px;height:52px;border-radius:12px;background-size:cover;
+        background-position:center;background-color:#e2e8f0;flex-shrink:0;
+    }
+    .conv-item{cursor:pointer;padding:11px 6px;border-radius:12px;transition:.2s;}
+    .conv-item:hover{background:#f8fafc;}
+    .conv-avatar{
+        width:42px;height:42px;border-radius:50%;flex-shrink:0;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;
+        display:flex;align-items:center;justify-content:center;
+        font-size:13px;font-weight:700;
+    }
+    .conv-body{flex:1;min-width:0;}
+    .conv-name{font-size:12.5px;font-weight:600;color:#0f172a;display:flex;align-items:center;gap:6px;}
+    .conv-preview{
+        font-size:11px;color:#94a3b8;white-space:nowrap;
+        overflow:hidden;text-overflow:ellipsis;margin-top:2px;
+    }
+    .conv-time{font-size:10px;color:#cbd5e1;flex-shrink:0;}
+    .dot-unread{width:7px;height:7px;background:#ef4444;border-radius:50%;display:inline-block;}
+    .del-btn{color:#ef4444;font-size:14px;cursor:pointer;padding:8px;transition:transform .2s;}
+    .del-btn:active{transform:scale(.85);}
+    .student-tag{
+        font-size:10px;font-weight:700;color:#059669;background:#dcfce7;
+        padding:4px 10px;border-radius:20px;flex-shrink:0;
+    }
+    .mini-empty{text-align:center;padding:26px 10px;color:#94a3b8;}
+    .mini-empty i{font-size:34px;color:#cbd5e1;display:block;margin-bottom:8px;}
+    .mini-empty p{font-size:12px;}
+
+    /* Admin conversation */
+    .conv-head{
+        display:flex;align-items:center;gap:12px;background:#fff;
+        padding:13px 15px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:14px;
+    }
+    .conv-head > i{font-size:16px;color:#64748b;cursor:pointer;padding:4px;}
+    .conv-sub{font-size:10.5px;color:#94a3b8;}
+    .conv-messages{
+        background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow);
+        max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;
+        margin-bottom:14px;
+    }
+    .conv-messages::-webkit-scrollbar{display:none;}
+    .conv-input{display:flex;gap:10px;align-items:center;}
+    .conv-input input{
+        flex:1;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:25px;
+        font-size:12.5px;font-family:inherit;outline:none;transition:.2s;background:#fff;
+    }
+    .conv-input input:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.1);}
+    .conv-input button{
+        width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+        background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff;
+        font-size:15px;flex-shrink:0;transition:.3s;
+    }
+    .conv-input button:hover{transform:scale(1.06);}
+
+    /* ============================================================
+       PAYMENT GATEWAY
+    ============================================================ */
+    .pay-overlay{
+        position:absolute;inset:0;background:rgba(15,23,42,.62);
+        backdrop-filter:blur(5px);z-index:500;display:flex;
+        align-items:flex-end;justify-content:center;
+        opacity:0;pointer-events:none;transition:.3s;
+    }
+    .pay-overlay.active{opacity:1;pointer-events:auto;}
+    .pay-sheet{
+        width:100%;background:#fff;border-radius:26px 26px 0 0;
+        padding:22px 20px 28px;max-height:93%;overflow-y:auto;
+        transform:translateY(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);
+    }
+    .pay-sheet::-webkit-scrollbar{display:none;}
+    .pay-overlay.active .pay-sheet{transform:translateY(0);}
+
+    .pay-head{
+        display:flex;align-items:center;justify-content:space-between;
+        font-size:12.5px;font-weight:600;color:#64748b;margin-bottom:16px;
+    }
+    .pay-head span{display:flex;align-items:center;gap:7px;}
+    .pay-close{font-size:16px;color:#94a3b8;cursor:pointer;padding:4px;transition:transform .2s;}
+    .pay-close:active{transform:scale(.85);}
+    .pay-amount{font-size:29px;font-weight:800;color:#0f172a;text-align:center;letter-spacing:-1px;}
+    .pay-batch{
+        font-size:12px;color:#64748b;text-align:center;margin-bottom:20px;
+        line-height:1.4;padding:0 10px;
+    }
+    .pay-methods{display:flex;gap:8px;margin-bottom:18px;}
+    .pay-method{
+        flex:1;padding:12px 4px;border:1.5px solid #e2e8f0;border-radius:13px;
+        display:flex;flex-direction:column;align-items:center;gap:6px;
+        font-size:10.5px;font-weight:600;color:#64748b;cursor:pointer;transition:.25s;
+    }
+    .pay-method i{font-size:15px;}
+    .pay-method.active{
+        border-color:#0ea5e9;color:#0ea5e9;background:#f0f9ff;
+        box-shadow:0 0 0 3px rgba(14,165,233,.1);
+    }
+    .pay-panel{margin-bottom:16px;}
+    .pay-note{
+        font-size:10.5px;color:#94a3b8;display:flex;align-items:center;gap:6px;
+        margin-top:-4px;padding-left:2px;
+    }
+    .pay-btn{
+        width:100%;padding:15px;border:none;border-radius:14px;cursor:pointer;
+        background:linear-gradient(135deg,#10b981,#059669);color:#fff;
+        font-size:14.5px;font-weight:700;font-family:inherit;transition:.3s;
+        display:flex;align-items:center;justify-content:center;gap:9px;
+    }
+    .pay-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(16,185,129,.4);}
+    .pay-btn:disabled{opacity:.8;cursor:not-allowed;transform:none;}
+    .pay-secure{
+        text-align:center;font-size:10px;color:#94a3b8;margin-top:13px;
+        display:flex;align-items:center;justify-content:center;gap:6px;
+    }
+    .pay-success{text-align:center;padding:22px 0 6px;}
+    .success-check{
+        width:82px;height:82px;border-radius:50%;background:#d1fae5;
+        display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+        animation:popIn .55s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .success-check i{font-size:40px;color:#10b981;animation:fadeUp .45s .2s both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+    .pay-success h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:6px;}
+    .pay-success p{font-size:12.5px;color:#64748b;margin-bottom:14px;}
+    .pay-receipt{
+        font-size:11px;color:#94a3b8;background:#f8fafc;padding:10px;
+        border-radius:10px;display:inline-block;
+    }
+
+    /* ============ TOAST ============ */
+    .toast{
+        position:absolute;left:50%;bottom:110px;transform:translate(-50%,20px);
+        background:#0f172a;color:#fff;padding:12px 20px;border-radius:12px;
+        font-size:12.5px;font-weight:500;opacity:0;pointer-events:none;
+        transition:.35s;z-index:999;max-width:88%;text-align:center;
+        box-shadow:0 10px 30px rgba(0,0,0,.3);
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0);}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ============================================================
+         AUTH SCREEN
+    ============================================================ -->
+    <div id="auth-screen">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="blob blob3"></div>
+
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fas fa-robot"></i></div>
+            <h1 class="auth-title">Gyan Automation</h1>
+            <p class="auth-sub">Learn • Build • Automate</p>
+
+            <div class="auth-tabs" data-active="login">
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="register">Register</div>
+                <div class="auth-pill"></div>
+            </div>
+
+            <!-- LOGIN -->
+            <form id="login-form">
+                <div class="auth-field">
+                    <input id="loginId" type="text" placeholder="Email / Phone" autocomplete="off">
+                    <i class="far fa-envelope"></i>
+                </div>
+                <div class="auth-field">
+                    <input id="loginPass" type="password" placeholder="Password" autocomplete="off">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="auth-forgot" onclick="resetPassword()">Forgot Password?</div>
+                <button type="submit" class="auth-btn" id="loginBtn">
+                    Login <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- REGISTER -->
+            <form id="register-form" style="display:none;">
+                <div class="auth-field">
+                    <input id="regName" type="text" placeholder="Full Name" autocomplete="off">
+                    <i class="far fa-user"></i>
+                </div>
+                <div class="auth-field">
+                    <input id="regEmail" type="text" placeholder="Email / Phone" autocomplete="off">
+                    <i class="far fa-envelope"></i>
+                </div>
+                <div class="auth-field">
+                    <input id="regPass" type="password" placeholder="Create Password (min 6 chars)" autocomplete="off">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="auth-btn" id="regBtn">
+                    Create Account <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
+
+            <div class="auth-msg" id="authMsg"></div>
+
+            <p class="auth-hint"><i class="fas fa-shield-alt"></i> Secure login for students &amp; admin</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         STUDENT APP
+    ============================================================ -->
+    <div id="app-screen">
+
+        <header class="app-header">
+            <div class="header-left">
+                <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
+                <span class="app-title">Gyan Automation</span>
+            </div>
+            <i class="far fa-bell bell-icon" onclick="toast('No new notifications')"></i>
+        </header>
+
+        <div class="main-content" id="mainContent">
+
+            <!-- HOME -->
+            <section id="home-view" class="view-section active">
+                <div class="greeting-area">
+                    <div class="greeting">
+                        <h2>Hello, <span id="userName">Student</span></h2>
+                        <p>Ready to learn something new?</p>
+                    </div>
+                    <div class="profile-avatar" onclick="toggleDrawer()"></div>
+                </div>
+
+                <!-- SLIDER : image only, sharp corners -->
+                <div class="slider-wrapper">
+                    <div class="slider-track" id="sliderTrack"></div>
+                    <div class="slider-dots" id="sliderDots"></div>
+                </div>
+
+                <div class="home-grid">
+                    <button type="button" class="tile t-orange" onclick="switchView('paid-view')">
+                        <span class="tile-ico"><i class="fas fa-circle-play"></i></span><span class="tile-lbl">Paid Course</span>
+                    </button>
+                    <button type="button" class="tile t-blue" onclick="openCategory('ebooks')">
+                        <span class="tile-ico"><i class="fas fa-book"></i></span><span class="tile-lbl">E-Books</span>
+                    </button>
+                    <button type="button" class="tile t-cyan" onclick="openCategory('software')">
+                        <span class="tile-ico"><i class="fas fa-laptop-code"></i></span><span class="tile-lbl">Software</span>
+                    </button>
+                    <button type="button" class="tile t-green" onclick="openCategory('study')">
+                        <span class="tile-ico"><i class="fas fa-graduation-cap"></i></span><span class="tile-lbl">Study Material</span>
+                    </button>
+                    <button type="button" class="tile t-royal" onclick="openCategory('live')">
+                        <span class="tile-ico"><i class="fas fa-chalkboard-user"></i></span><span class="tile-lbl">Live Class</span>
+                    </button>
+                    <button type="button" class="tile t-yellow" onclick="openCategory('test')">
+                        <span class="tile-ico"><i class="fas fa-file-pen"></i></span><span class="tile-lbl">Test Series</span>
+                    </button>
+                    <button type="button" class="tile t-pink" onclick="openCategory('video')">
+                        <span class="tile-ico"><i class="fas fa-video"></i></span><span class="tile-lbl">Free Video</span>
+                    </button>
+                    <button type="button" class="tile t-deep" onclick="openCategory('social')">
+                        <span class="tile-ico"><i class="fas fa-share-nodes"></i></span><span class="tile-lbl">Social Media Link</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PAID COURSE (BATCH LIST) -->
+            <section id="paid-view" class="view-section">
+                <div class="sub-head">
+                    <button type="button" class="back-btn" onclick="switchView('home-view')" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+                    <div class="section-title"><i class="fas fa-layer-group" style="color:#0ea5e9;"></i> Paid Course</div>
+                </div>
+                <div id="batchList" class="batch-list"></div>
+            </section>
+
+            <!-- GENERIC CATEGORY PAGE -->
+            <section id="cat-view" class="view-section">
+                <div class="sub-head">
+                    <button type="button" class="back-btn" onclick="switchView('home-view')" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+                    <div class="section-title"><i id="catIcon" class="fas fa-folder" style="color:#0ea5e9;"></i> <span id="catTitle">Category</span></div>
+                </div>
+                <div id="catBody"></div>
+            </section>
+
+            <!-- MY COURSES -->
+            <section id="courses-view" class="view-section">
+                <div class="section-title">
+                    <i class="fas fa-play-circle" style="color:#0ea5e9;"></i> My Courses
+                </div>
+                <div id="myCourses"></div>
+            </section>
+
+            <!-- DOWNLOADS -->
+            <section id="downloads-view" class="view-section">
+                <div class="section-title">
+                    <i class="fas fa-download" style="color:#0ea5e9;"></i> Downloads
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search" style="color:#94a3b8;"></i>
+                    <input type="text" placeholder="Search downloads...">
+                </div>
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No Content Available</h3>
+                    <p>We couldn't find any matching results</p>
+                </div>
+            </section>
+
+            <!-- CHAT -->
+            <section id="chat-view" class="view-section">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <input id="chatInput" type="text" placeholder="Type your message here...">
+                    <i class="fas fa-paper-plane" onclick="sendChat()"></i>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="fab-whatsapp" onclick="window.open('https://wa.me/916202320527','_blank')">
+            <i class="fab fa-whatsapp"></i>
+        </div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" data-target="home-view" onclick="switchView('home-view')">
+                <i class="fas fa-home"></i><span>Home</span>
+            </div>
+            <div class="nav-item" data-target="courses-view" onclick="switchView('courses-view')">
+                <i class="fas fa-book-open"></i><span>My Courses</span>
+            </div>
+            <div class="nav-item" data-target="chat-view" onclick="switchView('chat-view')">
+                <i class="far fa-comment-alt"></i><span>Chat</span>
+            </div>
+            <div class="nav-item" data-target="downloads-view" onclick="switchView('downloads-view')">
+                <i class="fas fa-download"></i><span>Downloads</span>
+            </div>
+            <div class="nav-item" onclick="window.open('https://wa.me/916202320527','_blank')">
+                <i class="fab fa-whatsapp"></i><span>Whatsapp</span>
+            </div>
+        </nav>
+
+        <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+        <div class="drawer" id="drawer">
+            <div class="drawer-profile">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+                <h2 id="drawerName">Student</h2>
+                <p style="font-size:11.5px;color:#94a3b8;" id="drawerEmail">student@email.com</p>
+            </div>
+            <ul class="drawer-menu">
+                <li onclick="switchView('home-view'); toggleDrawer();"><i class="fas fa-home"></i> Home</li>
+                <li onclick="switchView('courses-view'); toggleDrawer();"><i class="fas fa-book-open"></i> My Courses</li>
+                <li onclick="switchView('downloads-view'); toggleDrawer();"><i class="fas fa-download"></i> Downloads</li>
+                <li onclick="switchView('chat-view'); toggleDrawer();"><i class="far fa-comment-alt"></i> Chat</li>
+                <li onclick="toast('No purchases pending');"><i class="fas fa-shopping-bag"></i> Purchases</li>
+                <li onclick="toast('Settings coming soon');"><i class="fas fa-cog"></i> Settings</li>
+                <li onclick="toast('Thanks for the love! ⭐');"><i class="fas fa-star"></i> Rate Us</li>
+                <li onclick="toast('Share link copied!');"><i class="fas fa-share"></i> Share App</li>
+                <li onclick="logout()" style="color:#ef4444;"><i class="fas fa-sign-out-alt" style="color:#ef4444;"></i> Logout</li>
+            </ul>
+            <div class="drawer-footer">
+                <p>Follow us</p>
+                <i class="fab fa-whatsapp" onclick="window.open('https://wa.me/916202320527','_blank')"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         ADMIN PANEL
+    ============================================================ -->
+    <div id="admin-screen">
+
+        <header class="app-header">
+            <div class="header-left">
+                <span class="admin-chip"><i class="fas fa-user-shield"></i> ADMIN</span>
+                <span class="app-title">Gyan Automation</span>
+            </div>
+            <i class="fas fa-sign-out-alt bell-icon" onclick="logout()" title="Logout"></i>
+        </header>
+
+        <div class="admin-tabs">
+            <div class="admin-tab active" data-tab="batches" onclick="adminTab('batches')">
+                <i class="fas fa-layer-group"></i> Batches
+            </div>
+            <div class="admin-tab" data-tab="chat" onclick="adminTab('chat')">
+                <i class="fas fa-comments"></i> Chats <span id="chatBadge" class="badge">0</span>
+            </div>
+            <div class="admin-tab" data-tab="payments" onclick="adminTab('payments')">
+                <i class="fas fa-rupee-sign"></i> Payments <span id="payBadge" class="badge">0</span>
+            </div>
+            <div class="admin-tab" data-tab="students" onclick="adminTab('students')">
+                <i class="fas fa-users"></i> Students
+            </div>
+        </div>
+
+        <div class="admin-content" id="adminContent">
+            <div id="admin-batches" class="admin-pane active"></div>
+            <div id="admin-chat" class="admin-pane"></div>
+            <div id="admin-payments" class="admin-pane"></div>
+            <div id="admin-students" class="admin-pane"></div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         PAYMENT SHEET
+    ============================================================ -->
+    <div class="pay-overlay" id="payOverlay">
+        <div class="pay-sheet" id="paySheet">
+            <div id="payBody"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ==================================================================
+   0. STORAGE HELPERS
+================================================================== */
+/* ---- FIREBASE CONFIG ---- */
+const firebaseConfig = {
+  apiKey: "AIzaSyBeZl52HEWGz-vE72QZ5taznvpYTfq3QUk",
+  authDomain: "login-and-reg-5728d.firebaseapp.com",
+  databaseURL: "https://login-and-reg-5728d-default-rtdb.firebaseio.com",
+  projectId: "login-and-reg-5728d",
+  storageBucket: "login-and-reg-5728d.firebasestorage.app",
+  messagingSenderId: "435846403197",
+  appId: "1:435846403197:web:d6a05a55e40839d15dcd14"
+};
+
+const PHONE_DOMAIN = '@phone.gyanautomation.app';
+/* Admin ka login ID (phone). Is ID se register/login karne wala admin hota hai. firestore.rules me bhi yehi hai */
+const ADMIN_EMAIL = '9905656116' + PHONE_DOMAIN;
+const SID_KEY = 'ga_sid_';
+let claimNext = false, mySid = null;
+
+const FB_OK = typeof firebase !== 'undefined';
+let auth = null, db = null;
+if(FB_OK){
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db   = firebase.firestore();
+}
+
+function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtPrice(n){ return (n === 0 || n === '0') ? 'FREE' : '₹' + Number(n).toLocaleString('en-IN'); }
+function fmtDate(ts){ return new Date(ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtTime(ts){ return new Date(ts).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+function initials(n){
+    return (n || 'S').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+/* ==================================================================
+   1. SLIDER IMAGES  →  YAHAN APNI IMAGE URL REPLACE KAREIN
+================================================================== */
+const SLIDER_IMAGES = [
+    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgqlqupKpBStr-OjLdXyvxu2YpLUtmPGY6mYUQh8icare5CLaK9t70ZV_OIpyEfLfn4HevCZGHe3EFxnTZIOjA8HQ3kNoxwzARrtaYjF_PqqOLBvqKzPHvV08EwJDwrrNaYsC3o8HwXcGvjGCJ2b3EcKLnXkZBiulQ5zsNUH1AJGkcTqr-l1RLkqQKFDAJx/s853/im%201%20.gif",
+    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwFfIrlUQv4QJH0iqy8rJyHRZZhpTYXbDhTycz8DWUHgiLStkFJIWRZuvkqadKCLp-5wYpbQ897LJQBpNnCqa-dxwpyMH8NpPmc32OQJaIrdEesvLTTcNvp2_WqI42YyRANPZfHIkXWerLMF78CHADDTfAC59SwAK3oR2e1Gi6R_qZBQRKivhuVjlBd-Y9/s853/Presentation2.gif",
+    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrxwFLsFFpm1iO1ZSTSpzHPTCehdCw3M-YvEWYUwl5g7BvAzaBzmDnV7qXuLkY8ZWnAG9u32MAE-vDCnkHEQTxwefL3qYldp5vDXcwbC6rxf3Xgppqf2zuAelSqZe1YQAUMvOCwY_wD4dFFZn0CZZxwShbl00PGSsaPS2itb-B6WMdDLa7WMrU5DLPozMn/s853/ia%202.gif"
+];
+
+const DEFAULT_IMG = SLIDER_IMAGES[0];
+
+/* ==================================================================
+   2. LIVE DATA (FIRESTORE)
+================================================================== */
+let batches = [];          // all batches (live)
+let me = null;             // current student's profile
+let myPurchases = [];      // current student's purchases (server-controlled)
+let myMsgs = [];           // current student's chat messages
+let users = [], chats = [], purchasesAll = [];   // admin only
+let myRequests = [], requests = [], paySettings = {};
+let authUser = null, isAdminUser = false;
+let unsubs = [], adminMsgUnsub = null;
+
+function currentUser(){
+    return me ? Object.assign({}, me, { purchases: myPurchases }) : null;
+}
+function displayId(email){
+    return (email || '').endsWith(PHONE_DOMAIN) ? email.split('@')[0] : (email || '');
+}
+function listen(query, onData, label){
+    const un = query.onSnapshot(onData, err => {
+        console.error(label, err);
+        toast('Could not load ' + label + ' (' + (err.code || 'error') + ')');
+    });
+    unsubs.push(un);
+}
+function stopListeners(){
+    unsubs.forEach(fn => { try{ fn(); }catch(e){} });
+    unsubs = [];
+    if(adminMsgUnsub){ try{ adminMsgUnsub(); }catch(e){} adminMsgUnsub = null; }
+    batches = []; me = null; myPurchases = []; myMsgs = []; myRequests = []; requests = []; paySettings = {};
+    users = []; chats = []; purchasesAll = [];
+    adminChatUser = null;
+}
+function listenBatches(){
+    listen(db.collection('batches').orderBy('createdAt', 'desc'), snap => {
+        batches = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+        if(isAdminUser) renderAdminBatches();
+        else { renderBatches(); renderCourses(); }
+    }, 'batches');
+}
+function startStudent(uid){
+    listen(db.collection('users').doc(uid), snap => {
+        me = snap.exists ? Object.assign({ id: uid }, snap.data()) : { id: uid, name: '', email: authUser.email, phone: '' };
+        updateStudentHeader();
+    }, 'profile');
+    listen(db.collection('users').doc(uid).collection('purchases'), snap => {
+        myPurchases = snap.docs.map(d => d.data());
+        renderBatches(); renderCourses();
+    }, 'purchases');
+    listen(db.collection('payRequests').where('uid', '==', uid), snap => {
+        myRequests = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+        renderBatches();
+    }, 'payments');
+    listen(db.collection('settings').doc('payment'), snap => {
+        paySettings = snap.exists ? snap.data() : {};
+    }, 'payment settings');
+    listen(db.collection('chats').doc(uid).collection('messages').orderBy('time'), snap => {
+        myMsgs = snap.docs.map(d => d.data());
+        renderStudentChat();
+    }, 'chat');
+}
+function mergeAdminUsers(){
+    const m = {};
+    purchasesAll.forEach(p => { (m[p.uid] = m[p.uid] || []).push(p); });
+    users.forEach(u => { u.purchases = m[u.id] || []; });
+}
+function startAdmin(){
+    listen(db.collection('users'), snap => {
+        users = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+        mergeAdminUsers(); renderAdminStudents(); renderAdminChatList(); renderAdminPayments();
+    }, 'students');
+    listen(db.collectionGroup('purchases'), snap => {
+        purchasesAll = snap.docs.map(d => Object.assign({ uid: d.ref.parent.parent.id }, d.data()));
+        mergeAdminUsers(); renderAdminStudents();
+    }, 'purchases');
+    listen(db.collection('chats'), snap => {
+        chats = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+        renderAdminChatList();
+    }, 'chats');
+    listen(db.collection('payRequests'), snap => {
+        requests = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+        renderAdminPayments();
+    }, 'payment requests');
+    listen(db.collection('settings').doc('payment'), snap => {
+        paySettings = snap.exists ? snap.data() : {};
+        renderAdminPayments();
+    }, 'payment settings');
+}
+
+/* ==================================================================
+   3. TOAST
+================================================================== */
+function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ==================================================================
+   4. SLIDER
+================================================================== */
+let slideIndex = 0, slideTimer = null;
+
+function initSlider(){
+    const track = document.getElementById('sliderTrack');
+    const dotsBox = document.getElementById('sliderDots');
+    if(!track || !dotsBox) return;
+
+    track.innerHTML = SLIDER_IMAGES.map((src, i) =>
+        `<img class="slide-img" src="${src}" alt="Slide ${i+1}">`
+    ).join('');
+
+    dotsBox.innerHTML = SLIDER_IMAGES.map((_, i) =>
+        `<div class="dot${i === 0 ? ' active' : ''}" data-i="${i}"></div>`
+    ).join('');
+
+    dotsBox.querySelectorAll('.dot').forEach(d => {
+        d.addEventListener('click', () => {
+            slideIndex = Number(d.dataset.i);
+            updateSlider();
+            startAutoSlide();
+        });
+    });
+
+    updateSlider();
+    startAutoSlide();
+}
+
+function updateSlider(){
+    const track = document.getElementById('sliderTrack');
+    if(!track) return;
+    track.style.transform = `translateX(-${slideIndex * 100}%)`;
+    document.querySelectorAll('#sliderDots .dot').forEach((d, i) =>
+        d.classList.toggle('active', i === slideIndex)
+    );
+}
+
+function startAutoSlide(){
+    clearInterval(slideTimer);
+    if(SLIDER_IMAGES.length < 2) return;
+    slideTimer = setInterval(() => {
+        slideIndex = (slideIndex + 1) % SLIDER_IMAGES.length;
+        updateSlider();
+    }, 3500);
+}
+
+/* ==================================================================
+   5. AUTH
+================================================================== */
+function authTab(name){
+    document.querySelectorAll('.auth-tab').forEach(t =>
+        t.classList.toggle('active', t.dataset.tab === name)
+    );
+    document.querySelector('.auth-tabs').dataset.active = name;
+    document.getElementById('login-form').style.display    = name === 'login' ? 'block' : 'none';
+    document.getElementById('register-form').style.display = name === 'register' ? 'block' : 'none';
+    document.getElementById('authMsg').classList.remove('show');
+}
+
+function authMsg(text, type){
+    const el = document.getElementById('authMsg');
+    el.textContent = text;
+    el.className = 'auth-msg show ' + type;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+function setBtnLoading(btn, label){
+    if(!btn.dataset.orig) btn.dataset.orig = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> ' + label;
+}
+function resetBtn(btn){
+    if(btn.dataset.orig){
+        btn.innerHTML = btn.dataset.orig;
+        btn.disabled = false;
+    }
+}
+
+function toAuthEmail(v){
+    v = String(v || '').trim().toLowerCase();
+    if(v.includes('@')) return v;
+    const digits = v.replace(/\D/g, '');
+    return digits.length >= 10 ? digits.slice(-10) + PHONE_DOMAIN : null;
+}
+function authErr(e){
+    const map = {
+        'auth/invalid-credential':'Invalid ID or password',
+        'auth/wrong-password':'Invalid ID or password',
+        'auth/user-not-found':'Invalid ID or password',
+        'auth/invalid-login-credentials':'Invalid ID or password',
+        'auth/email-already-in-use':'This Email / Phone is already registered',
+        'auth/weak-password':'Password must be at least 6 characters',
+        'auth/invalid-email':'Enter a valid email or 10-digit phone',
+        'auth/network-request-failed':'No internet connection',
+        'auth/too-many-requests':'Too many attempts, try again later',
+        'auth/operation-not-allowed':'Email/Password sign-in is not enabled in Firebase'
+    };
+    return map[e && e.code] || ('Error: ' + ((e && (e.code || e.message)) || 'unknown'));
+}
+function doLogin(){
+    const idRaw = document.getElementById('loginId').value.trim();
+    const pass  = document.getElementById('loginPass').value;
+    const btn   = document.getElementById('loginBtn');
+    if(!idRaw || !pass){ authMsg('Please fill all fields', 'error'); return; }
+    if(!FB_OK){ authMsg('Could not load Firebase, check internet', 'error'); return; }
+    const email = toAuthEmail(idRaw);
+    if(!email){ authMsg('Enter a valid email or 10-digit phone', 'error'); return; }
+    setBtnLoading(btn, 'Signing in...');
+    claimNext = true;
+    auth.signInWithEmailAndPassword(email, pass)
+        .then(() => resetBtn(btn))
+        .catch(e => { claimNext = false; resetBtn(btn); authMsg(authErr(e), 'error'); });
+}
+function doRegister(){
+    const name   = document.getElementById('regName').value.trim();
+    const idRaw  = document.getElementById('regEmail').value.trim();
+    const pass   = document.getElementById('regPass').value;
+    const btn    = document.getElementById('regBtn');
+    if(!name || !idRaw || !pass){ authMsg('Please fill all fields', 'error'); return; }
+    if(pass.length < 6){ authMsg('Password must be at least 6 characters', 'error'); return; }
+    if(!FB_OK){ authMsg('Could not load Firebase, check internet', 'error'); return; }
+    const email = toAuthEmail(idRaw);
+    if(!email){ authMsg('Enter a valid email or 10-digit phone', 'error'); return; }
+    setBtnLoading(btn, 'Creating account...');
+    claimNext = true;
+    auth.createUserWithEmailAndPassword(email, pass)
+        .then(cred => db.collection('users').doc(cred.user.uid).set({
+            name: name.slice(0, 60),
+            email,
+            phone: idRaw.includes('@') ? '' : email.split('@')[0],
+            joined: Date.now()
+        }))
+        .then(() => {
+            resetBtn(btn);
+            authMsg('Account created successfully!', 'success');
+            document.getElementById('regName').value  = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPass').value  = '';
+        })
+        .catch(e => { claimNext = false; resetBtn(btn); authMsg(authErr(e), 'error'); });
+}
+function resetPassword(){
+    const id = document.getElementById('loginId').value.trim();
+    if(!FB_OK) return;
+    if(!id.includes('@')){ toast('Type your email in the ID box first'); return; }
+    auth.sendPasswordResetEmail(id)
+        .then(() => toast('Password reset email sent'))
+        .catch(e => toast(authErr(e)));
+}
+
+/* ==================================================================
+   6. SCREEN ROUTING
+================================================================== */
+function showAuthScreen(){
+    document.getElementById('app-screen').classList.remove('active');
+    document.getElementById('admin-screen').classList.remove('active');
+    document.getElementById('drawer').classList.remove('active');
+    document.getElementById('drawerOverlay').classList.remove('active');
+    document.getElementById('auth-screen').classList.remove('hide');
+    document.getElementById('loginId').value   = '';
+    document.getElementById('loginPass').value = '';
+    authTab('login');
+}
+function updateStudentHeader(){
+    const n = (me && me.name) || displayId(authUser && authUser.email) || 'Student';
+    document.getElementById('userName').textContent    = n;
+    document.getElementById('drawerName').textContent  = n;
+    document.getElementById('drawerEmail').textContent = displayId(authUser && authUser.email);
+}
+function openStudent(){
+    document.getElementById('auth-screen').classList.add('hide');
+    document.getElementById('admin-screen').classList.remove('active');
+    document.getElementById('app-screen').classList.add('active');
+    updateStudentHeader();
+    renderBatches();
+    renderCourses();
+    renderStudentChat();
+    switchView('home-view');
+}
+function openAdmin(){
+    document.getElementById('auth-screen').classList.add('hide');
+    document.getElementById('app-screen').classList.remove('active');
+    document.getElementById('admin-screen').classList.add('active');
+    renderAdminBatches();
+    renderAdminChatList();
+    renderAdminStudents();
+    adminTab('batches');
+}
+function logout(){
+    if(!FB_OK) return;
+    auth.signOut().then(() => toast('Logged out successfully'));
+}
+function toggleDrawer(){
+    document.getElementById('drawer').classList.toggle('active');
+    document.getElementById('drawerOverlay').classList.toggle('active');
+}
+
+const HOME_SUBVIEWS = ['paid-view', 'cat-view'];
+
+function switchView(id){
+    const navId = HOME_SUBVIEWS.indexOf(id) > -1 ? 'home-view' : id;
+    document.querySelectorAll('.view-section').forEach(v =>
+        v.classList.toggle('active', v.id === id)
+    );
+    document.querySelectorAll('.nav-item').forEach(n =>
+        n.classList.toggle('active', n.dataset.target === navId)
+    );
+
+    const mc = document.getElementById('mainContent');
+    if(mc) mc.scrollTop = 0;
+
+    const fab = document.querySelector('.fab-whatsapp');
+    if(fab) fab.style.display = (id === 'chat-view') ? 'none' : 'flex';
+
+    if(id === 'chat-view')    renderStudentChat();
+    if(id === 'courses-view') renderCourses();
+    if(id === 'home-view' || id === 'paid-view') renderBatches();
+}
+
+
+/* ==================================================================
+   6B. HOME CATEGORIES
+   SOCIAL_LINKS me apne asli links daal dein (url khali ho to "jald aayega" dikhega)
+================================================================== */
+const SOCIAL_LINKS = [
+    { name:'WhatsApp', icon:'fab fa-whatsapp',  color:'#25D366', url:'https://wa.me/916202320527' },
+    { name:'YouTube',  icon:'fab fa-youtube',   color:'#ff0000', url:'' },
+    { name:'Instagram',icon:'fab fa-instagram', color:'#d62976', url:'' },
+    { name:'Facebook', icon:'fab fa-facebook-f',color:'#1877f2', url:'' },
+    { name:'Telegram', icon:'fab fa-telegram',  color:'#229ed9', url:'' }
+];
+
+const CATEGORIES = {
+    ebooks:   { title:'E-Books',        icon:'fa-book',           sub:'E-Books will be available here soon' },
+    software: { title:'Software',       icon:'fa-laptop-code',    sub:'Useful automation software will be added here' },
+    study:    { title:'Study Material', icon:'fa-graduation-cap', sub:'Notes and study material coming soon' },
+    live:     { title:'Live Class',     icon:'fa-chalkboard-user',sub:'No live class scheduled right now' },
+    test:     { title:'Test Series',    icon:'fa-file-pen',       sub:'Practice tests will be available soon' },
+    video:    { title:'Free Video',     icon:'fa-video',          sub:'Free videos will be uploaded soon' },
+    social:   { title:'Social Media Link', icon:'fa-share-nodes', sub:'' }
+};
+
+function openSocial(i){
+    const s = SOCIAL_LINKS[i];
+    if(!s) return;
+    if(!s.url){ toast(s.name + ' link coming soon'); return; }
+    window.open(s.url, '_blank');
+}
+
+function openCategory(key){
+    const c = CATEGORIES[key];
+    if(!c) return;
+    document.getElementById('catTitle').textContent = c.title;
+    document.getElementById('catIcon').className = 'fas ' + c.icon;
+    const body = document.getElementById('catBody');
+
+    if(key === 'social'){
+        body.innerHTML = '<div class="link-list">' + SOCIAL_LINKS.map((s, i) => `
+            <button type="button" class="link-item" onclick="openSocial(${i})">
+                <span class="link-ico" style="background:${s.color}"><i class="${s.icon}"></i></span>
+                <span class="link-name">${esc(s.name)}</span>
+                <i class="fas fa-chevron-right"></i>
+            </button>`).join('') + '</div>';
+    } else {
+        body.innerHTML = `
+            <div class="empty-state">
+                <i class="fas ${c.icon}"></i>
+                <h3>Coming Soon</h3>
+                <p>${esc(c.sub)}</p>
+            </div>`;
+    }
+    switchView('cat-view');
+}
+
+/* ==================================================================
+   7. STUDENT — BATCHES
+================================================================== */
+function renderBatches(){
+    const wrap = document.getElementById('batchList');
+    if(!wrap) return;
+    const u = currentUser();
+
+    if(!batches.length){
+        wrap.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <h3>No Batches Yet</h3>
+                <p>New batches will appear here soon</p>
+            </div>`;
+        return;
+    }
+
+    wrap.innerHTML = batches.map(b => {
+        const bought = u && u.purchases.some(p => p.batchId === b.id && p.expiry > Date.now());
+        const pending = myRequests.some(r => r.batchId === b.id && r.status === 'pending');
+        const img = b.image || DEFAULT_IMG;
+        return `
+        <div class="batch-card">
+            <div class="batch-img" style="background-image:url('${img}')">
+                ${Number(b.price) === 0 ? '<span class="ribbon free">FREE</span>' : ''}
+            </div>
+            <div class="batch-body">
+                <div class="batch-title">${esc(b.title)}</div>
+                <div class="batch-meta"><i class="far fa-clock"></i> Valid for ${b.days} days</div>
+                ${b.desc ? `<div class="batch-desc">${esc(b.desc)}</div>` : ''}
+                <div class="batch-foot">
+                    <div class="batch-price">${fmtPrice(b.price)}</div>
+                    ${bought
+                        ? `<button class="btn-buy owned" onclick="switchView('courses-view')"><i class="fas fa-check-circle"></i> Purchased</button>`
+                        : (pending
+                            ? `<button class="btn-buy owned" style="background:#fff7e6;color:#b45309" onclick="toast('Payment verification pending, admin will unlock soon')"><i class="fas fa-hourglass-half"></i> Pending</button>`
+                            : `<button class="btn-buy" onclick="startBuy('${b.id}')">${Number(b.price) === 0 ? 'Enroll Free' : 'Buy Now'}</button>`)}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ==================================================================
+   8. STUDENT — MY COURSES
+================================================================== */
+function renderCourses(){
+    const wrap = document.getElementById('myCourses');
+    if(!wrap) return;
+    const u = currentUser();
+    if(!u) return;
+
+    const owned = u.purchases
+        .map(p => ({ p, b: batches.find(x => x.id === p.batchId) }))
+        .filter(x => x.b)
+        .sort((a, b) => b.p.expiry - a.p.expiry);
+
+    if(!owned.length){
+        wrap.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>No Courses Yet</h3>
+                <p>Buy a batch to start learning today</p>
+                <button class="btn-buy" style="margin-top:18px;" onclick="switchView('home-view')">
+                    Browse Batches
+                </button>
+            </div>`;
+        return;
+    }
+
+    wrap.innerHTML = owned.map(({ p, b }) => {
+        const active = p.expiry > Date.now();
+        return `
+        <div class="course-card">
+            <div class="course-image" style="background-image:url('${b.image || DEFAULT_IMG}')"></div>
+            <div class="course-details">
+                <div class="course-title">${esc(b.title)}</div>
+                <div class="course-expiry">
+                    <i class="far fa-calendar-alt"></i> Expiry: ${fmtDate(p.expiry)}
+                    <span class="status ${active ? 'ok' : 'exp'}">${active ? 'Active' : 'Expired'}</span>
+                </div>
+                <button class="btn-view" onclick="toast('Opening course content...')">View Course</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ==================================================================
+   9. STUDENT — CHAT
+================================================================== */
+function renderStudentChat(){
+    const wrap = document.getElementById('chatMessages');
+    if(!wrap) return;
+    if(!myMsgs.length){
+        wrap.innerHTML = `
+            <div class="chat-empty">
+                <i class="far fa-comment-dots"></i>
+                <p>Write to us, we will get back to you</p>
+            </div>`;
+        return;
+    }
+    wrap.innerHTML = myMsgs.map(m => `
+        <div class="msg ${m.from === 'student' ? 'me' : 'them'}">
+            <div class="bubble">${esc(m.text)}</div>
+            <div class="msg-time">${fmtTime(m.time)}</div>
+        </div>`).join('');
+    wrap.scrollTop = wrap.scrollHeight;
+}
+function sendChat(){
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim().slice(0, 1000);
+    if(!text) return;
+    if(!authUser || !me){ toast('Please login again'); return; }
+    const uid = authUser.uid, t = Date.now();
+    const wb = db.batch();
+    wb.set(db.collection('chats').doc(uid), {
+        userId: uid, userName: me.name || displayId(authUser.email),
+        lastText: text, lastFrom: 'student', lastTime: t
+    });
+    wb.set(db.collection('chats').doc(uid).collection('messages').doc(), { from:'student', text, time:t });
+    input.value = '';
+    wb.commit().catch(e => toast('Message failed: ' + (e.code || e.message)));
+}
+
+/* ==================================================================
+   10. PURCHASE FLOW (UPI + ADMIN VERIFY)
+================================================================== */
+const payState = { batchId: null, busy: false };
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function hasActive(batchId){
+    return myPurchases.some(p => p.batchId === batchId && p.expiry > Date.now());
+}
+function startBuy(batchId){
+    const b = batches.find(x => x.id === batchId);
+    if(!b) return;
+    if(hasActive(batchId)){ toast('You already own this batch'); return; }
+    if(Number(b.price) === 0){ freeEnroll(b); return; }
+    if(myRequests.some(r => r.batchId === batchId && r.status === 'pending')){
+        toast('Payment verification pending, admin will unlock soon'); return;
+    }
+    openPayment(batchId);
+}
+function upiLink(b){
+    const q = 'pa=' + encodeURIComponent(paySettings.upiId) +
+              '&pn=' + encodeURIComponent(paySettings.payee || 'Gyan Automation') +
+              '&am=' + encodeURIComponent(Number(b.price)) +
+              '&cu=INR&tn=' + encodeURIComponent(String(b.title).slice(0, 40));
+    return 'upi://pay?' + q;
+}
+function openPayment(batchId){
+    const b = batches.find(x => x.id === batchId);
+    if(!b) return;
+    payState.batchId = batchId;
+    payState.busy = false;
+    const ready = !!paySettings.upiId;
+    document.getElementById('payBody').innerHTML = `
+        <div class="pay-head">
+            <span><i class="fas fa-lock"></i> Secure Checkout</span>
+            <i class="fas fa-times pay-close" onclick="closePayment()"></i>
+        </div>
+        <div class="pay-amount">${fmtPrice(b.price)}</div>
+        <div class="pay-batch">${esc(b.title)}</div>
+        ${ready ? `
+        <div class="pay-note"><i class="fas fa-info-circle"></i>
+            Step 1: Pay <b>${fmtPrice(b.price)}</b> to <b>${esc(paySettings.upiId)}</b>
+            ${paySettings.payee ? '(' + esc(paySettings.payee) + ')' : ''}
+        </div>
+        <a class="pay-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;" href="${esc(upiLink(b))}">
+            <i class="fas fa-mobile-alt"></i> Open UPI App
+        </a>
+        <button class="pay-btn" style="background:#0f172a;margin-bottom:14px;" onclick="copyUpi()"><i class="far fa-copy"></i> Copy UPI ID</button>
+        <label class="f-label">Step 2: Enter UPI Transaction ID (UTR)</label>
+        <input class="f-input" id="utrInput" maxlength="30" placeholder="12 digit UTR / Ref No." autocomplete="off">
+        <button class="pay-btn" id="payBtn" onclick="submitPayRequest()"><i class="fas fa-paper-plane"></i> I Have Paid, Submit</button>
+        <div class="pay-secure"><i class="fas fa-clock"></i> Batch unlocks after admin verifies your payment</div>
+        ` : `
+        <div class="pay-note"><i class="fas fa-exclamation-circle"></i> Payment is not set up yet. Please contact admin on WhatsApp.</div>
+        `}`;
+    document.getElementById('payOverlay').classList.add('active');
+}
+function copyUpi(){
+    const v = paySettings.upiId || '';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(v).then(() => toast('UPI ID copied'), () => toast(v));
+    } else toast(v);
+}
+function closePayment(){
+    document.getElementById('payOverlay').classList.remove('active');
+    setTimeout(() => { document.getElementById('payBody').innerHTML = ''; }, 320);
+}
+function submitPayRequest(){
+    const b = batches.find(x => x.id === payState.batchId);
+    if(!b || payState.busy || !authUser || !me) return;
+    const utr = document.getElementById('utrInput').value.trim();
+    if(!/^[A-Za-z0-9]{6,30}$/.test(utr)){ toast('Enter a valid UTR / transaction ID'); return; }
+    payState.busy = true;
+    const btn = document.getElementById('payBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Submitting...';
+    db.collection('payRequests').add({
+        uid: authUser.uid,
+        userName: me.name || displayId(authUser.email),
+        batchId: b.id,
+        title: b.title,
+        amount: Number(b.price),
+        utr,
+        status: 'pending',
+        createdAt: Date.now()
+    }).then(() => {
+        closePayment();
+        toast('✅ Payment submitted. Admin will verify and unlock soon');
+    }).catch(e => {
+        payState.busy = false;
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> I Have Paid, Submit';
+        toast('Could not submit: ' + (e.code || e.message));
+    });
+}
+function freeEnroll(b){
+    if(!authUser){ toast('Please login again'); return; }
+    const now = Date.now();
+    db.collection('users').doc(authUser.uid).collection('purchases').doc(b.id).set({
+        batchId: b.id, purchasedAt: now, expiry: now + Number(b.days) * DAY_MS, amount: 0, via: 'free'
+    }).then(() => toast('🎉 Enrolled successfully! Batch added to My Courses'))
+      .catch(e => toast('Could not enroll: ' + (e.code || e.message)));
+}
+
+/* ==================================================================
+   11. ADMIN — BATCHES
+================================================================== */
+function adminTab(name){
+    document.querySelectorAll('.admin-tab').forEach(t =>
+        t.classList.toggle('active', t.dataset.tab === name)
+    );
+    document.querySelectorAll('.admin-pane').forEach(p =>
+        p.classList.toggle('active', p.id === 'admin-' + name)
+    );
+
+    if(name === 'batches')  renderAdminBatches();
+    if(name === 'chat')     renderAdminChatList();
+    if(name === 'payments') renderAdminPayments();
+    if(name === 'students') renderAdminStudents();
+
+    const ac = document.getElementById('adminContent');
+    if(ac) ac.scrollTop = 0;
+}
+
+function renderAdminBatches(){
+    const box = document.getElementById('admin-batches');
+    if(!box) return;
+    if(!document.getElementById('adminBatchList')){
+        box.innerHTML = `
+        <div class="admin-card">
+            <h3><i class="fas fa-plus-circle" style="color:#0ea5e9;"></i> Add New Batch</h3>
+            <input id="abTitle" class="f-input" placeholder="Batch title (e.g. Advanced PLC Programming)">
+            <div class="f-row">
+                <input id="abPrice" class="f-input" type="number" min="0" placeholder="Price ₹ (0 = Free)">
+                <input id="abDays"  class="f-input" type="number" min="1" placeholder="Validity days" value="365">
+            </div>
+            <input id="abImage" class="f-input" placeholder="Image URL (optional)">
+            <textarea id="abDesc" class="f-input" rows="2" placeholder="Short description (optional)"></textarea>
+            <button class="admin-btn" onclick="addBatch()"><i class="fas fa-plus"></i> Add Batch</button>
+        </div>
+        <div class="admin-card">
+            <h3><i class="fas fa-layer-group" style="color:#0ea5e9;"></i> All Batches (<span id="abCount">0</span>)</h3>
+            <div id="adminBatchList"></div>
+        </div>`;
+    }
+    document.getElementById('abCount').textContent = batches.length;
+    const list = document.getElementById('adminBatchList');
+    if(!batches.length){
+        list.innerHTML = `<div class="mini-empty"><i class="fas fa-box-open"></i><p>No batches added yet</p></div>`;
+        return;
+    }
+    list.innerHTML = batches.map(b => `
+        <div class="admin-batch-row">
+            <div class="admin-batch-thumb" style="background-image:url('${esc(b.image || DEFAULT_IMG)}')"></div>
+            <div class="conv-body">
+                <div class="conv-name">${esc(b.title)}</div>
+                <div class="conv-preview">${fmtPrice(b.price)} • ${esc(b.days)} days validity</div>
+            </div>
+            <i class="fas fa-trash-alt del-btn" onclick="deleteBatch('${esc(b.id)}')"></i>
+        </div>`).join('');
+}
+function addBatch(){
+    const title = document.getElementById('abTitle').value.trim();
+    const price = Number(document.getElementById('abPrice').value || 0);
+    const days  = Number(document.getElementById('abDays').value || 365);
+    let image   = document.getElementById('abImage').value.trim();
+    const desc  = document.getElementById('abDesc').value.trim();
+    if(!title){ toast('Please enter batch title'); return; }
+    if(!(price >= 0)){ toast('Enter a valid price'); return; }
+    if(!(days >= 1)){ toast('Validity must be at least 1 day'); return; }
+    if(!/^https?:\/\/[^\s'"<>]+$/i.test(image)) image = DEFAULT_IMG;
+    db.collection('batches').doc('b' + Date.now()).set({
+        title, price, days, image, desc, createdAt: Date.now()
+    }).then(() => {
+        ['abTitle','abPrice','abImage','abDesc'].forEach(id => { document.getElementById(id).value = ''; });
+        document.getElementById('abDays').value = 365;
+        toast('✅ New batch added successfully');
+    }).catch(e => toast('Could not add batch: ' + (e.code || e.message)));
+}
+function deleteBatch(id){
+    if(!confirm('Delete this batch permanently?')) return;
+    db.collection('batches').doc(id).delete()
+        .then(() => toast('Batch deleted'))
+        .catch(e => toast('Could not delete: ' + (e.code || e.message)));
+}
+
+/* ==================================================================
+   12. ADMIN — CHAT
+================================================================== */
+let adminChatUser = null, adminMsgs = [];
+
+function updateChatBadge(){
+    const unread = chats.filter(c => c.lastFrom === 'student').length;
+    const badge = document.getElementById('chatBadge');
+    if(!badge) return;
+    badge.textContent = unread;
+    badge.style.display = unread ? 'inline-block' : 'none';
+}
+function renderAdminChatList(){
+    updateChatBadge();
+    if(adminChatUser) return;
+    const box = document.getElementById('admin-chat');
+    if(!box) return;
+    const convs = chats.filter(c => c.lastText).sort((a, b) => (b.lastTime || 0) - (a.lastTime || 0));
+    let html = `<div class="admin-card">
+        <h3><i class="fas fa-comments" style="color:#0ea5e9;"></i> Student Conversations</h3>`;
+    if(!convs.length){
+        html += `<div class="mini-empty"><i class="far fa-comment-dots"></i><p>No chats yet</p></div>`;
+    } else {
+        html += convs.map(c => {
+            const u = users.find(x => x.id === c.id);
+            const name = (u && u.name) || c.userName || 'Student';
+            return `
+            <div class="conv-item" onclick="openAdminChat('${esc(c.id)}')">
+                <div class="conv-avatar">${esc(initials(name))}</div>
+                <div class="conv-body">
+                    <div class="conv-name">
+                        ${esc(name)}
+                        ${c.lastFrom === 'student' ? '<span class="dot-unread"></span>' : ''}
+                    </div>
+                    <div class="conv-preview">${c.lastFrom === 'admin' ? 'You: ' : ''}${esc(c.lastText)}</div>
+                </div>
+                <div class="conv-time">${fmtTime(c.lastTime)}</div>
+            </div>`;
+        }).join('');
+    }
+    html += `</div>`;
+    box.innerHTML = html;
+}
+function openAdminChat(userId){
+    if(adminMsgUnsub){ adminMsgUnsub(); adminMsgUnsub = null; }
+    adminChatUser = userId;
+    adminMsgs = [];
+    renderAdminConversation();
+    adminMsgUnsub = db.collection('chats').doc(userId).collection('messages').orderBy('time')
+        .onSnapshot(snap => {
+            adminMsgs = snap.docs.map(d => d.data());
+            renderAdminMsgs();
+        }, err => toast('Could not load chat (' + (err.code || 'error') + ')'));
+}
+function closeAdminChat(){
+    if(adminMsgUnsub){ adminMsgUnsub(); adminMsgUnsub = null; }
+    adminChatUser = null;
+    adminMsgs = [];
+    renderAdminChatList();
+}
+function renderAdminMsgs(){
+    const msgs = document.getElementById('adminConvMsgs');
+    if(!msgs) return;
+    msgs.innerHTML = adminMsgs.map(m => `
+        <div class="msg ${m.from === 'admin' ? 'me' : 'them'}">
+            <div class="bubble">${esc(m.text)}</div>
+            <div class="msg-time">${fmtTime(m.time)}</div>
+        </div>`).join('');
+    msgs.scrollTop = msgs.scrollHeight;
+}
+function renderAdminConversation(){
+    const box = document.getElementById('admin-chat');
+    if(!box) return;
+    const u = users.find(x => x.id === adminChatUser);
+    const c = chats.find(x => x.id === adminChatUser);
+    const name = (u && u.name) || (c && c.userName) || 'Student';
+    box.innerHTML = `
+        <div class="conv-head">
+            <i class="fas fa-arrow-left" onclick="closeAdminChat()"></i>
+            <div class="conv-avatar">${esc(initials(name))}</div>
+            <div>
+                <div class="conv-name">${esc(name)}</div>
+                <div class="conv-sub">${esc(displayId(u ? u.email : ''))}</div>
+            </div>
+        </div>
+        <div class="conv-messages" id="adminConvMsgs"></div>
+        <div class="conv-input">
+            <input id="adminReplyInput" placeholder="Type your reply..." autocomplete="off">
+            <button onclick="adminSend()"><i class="fas fa-paper-plane"></i></button>
+        </div>`;
+    document.getElementById('adminReplyInput').addEventListener('keydown', e => {
+        if(e.key === 'Enter') adminSend();
+    });
+    renderAdminMsgs();
+}
+function adminSend(){
+    const inp = document.getElementById('adminReplyInput');
+    if(!inp || !adminChatUser) return;
+    const text = inp.value.trim().slice(0, 1000);
+    if(!text) return;
+    const uid = adminChatUser, t = Date.now();
+    const u = users.find(x => x.id === uid);
+    const wb = db.batch();
+    wb.set(db.collection('chats').doc(uid), {
+        userId: uid, userName: (u && u.name) || 'Student',
+        lastText: text, lastFrom: 'admin', lastTime: t
+    }, { merge: true });
+    wb.set(db.collection('chats').doc(uid).collection('messages').doc(), { from:'admin', text, time:t });
+    inp.value = '';
+    wb.commit().catch(e => toast('Message failed: ' + (e.code || e.message)));
+}
+
+/* ==================================================================
+   12B. ADMIN — PAYMENTS
+================================================================== */
+function renderAdminPayments(){
+    const box = document.getElementById('admin-payments');
+    if(!box) return;
+    const pend = requests.filter(r => r.status === 'pending').sort((a, b) => a.createdAt - b.createdAt);
+    const badge = document.getElementById('payBadge');
+    if(badge){ badge.textContent = pend.length; badge.style.display = pend.length ? 'inline-block' : 'none'; }
+    if(!document.getElementById('payList')){
+        box.innerHTML = `
+        <div class="admin-card">
+            <h3><i class="fas fa-wallet" style="color:#0ea5e9;"></i> Payment Settings</h3>
+            <input id="psUpi" class="f-input" placeholder="Your UPI ID (e.g. name@okaxis)">
+            <input id="psName" class="f-input" placeholder="Payee name (shown to students)">
+            <button class="admin-btn" onclick="savePaySettings()"><i class="fas fa-save"></i> Save</button>
+        </div>
+        <div class="admin-card">
+            <h3><i class="fas fa-hourglass-half" style="color:#0ea5e9;"></i> Payment Requests</h3>
+            <div id="payList"></div>
+        </div>`;
+        document.getElementById('psUpi').value  = paySettings.upiId || '';
+        document.getElementById('psName').value = paySettings.payee || '';
+    } else {
+        const a = document.getElementById('psUpi'), n = document.getElementById('psName');
+        if(a && document.activeElement !== a && !a.value) a.value = paySettings.upiId || '';
+        if(n && document.activeElement !== n && !n.value) n.value = paySettings.payee || '';
+    }
+    const list = document.getElementById('payList');
+    const done = requests.filter(r => r.status !== 'pending').sort((a, b) => (b.decidedAt || 0) - (a.decidedAt || 0)).slice(0, 10);
+    if(!pend.length && !done.length){
+        list.innerHTML = `<div class="mini-empty"><i class="fas fa-receipt"></i><p>No payment requests yet</p></div>`;
+        return;
+    }
+    const row = (r, actions) => `
+        <div class="student-row" style="align-items:flex-start;">
+            <div class="conv-avatar">${esc(initials(r.userName))}</div>
+            <div class="conv-body">
+                <div class="conv-name">${esc(r.userName)} • ${fmtPrice(r.amount)}</div>
+                <div class="conv-preview" style="white-space:normal;">${esc(r.title)}</div>
+                <div class="conv-preview" style="white-space:normal;">UTR: <b>${esc(r.utr)}</b> • ${fmtDate(r.createdAt)} ${fmtTime(r.createdAt)}</div>
+                ${actions}
+            </div>
+        </div>`;
+    list.innerHTML =
+        pend.map(r => row(r, `
+            <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn-buy" style="padding:9px 16px;" onclick="approveRequest('${esc(r.id)}')"><i class="fas fa-check"></i> Approve</button>
+                <button class="btn-buy" style="padding:9px 16px;background:#fee2e2;color:#dc2626;box-shadow:none;" onclick="rejectRequest('${esc(r.id)}')"><i class="fas fa-times"></i> Reject</button>
+            </div>`)).join('') +
+        done.map(r => row(r, `<span class="status ${r.status === 'approved' ? 'ok' : 'exp'}" style="display:inline-block;margin-top:6px;">${r.status === 'approved' ? 'Approved' : 'Rejected'}</span>`)).join('');
+}
+function savePaySettings(){
+    const upiId = document.getElementById('psUpi').value.trim();
+    const payee = document.getElementById('psName').value.trim();
+    if(!/^[\w.\-]{2,}@[\w.\-]{2,}$/.test(upiId)){ toast('Enter a valid UPI ID'); return; }
+    db.collection('settings').doc('payment').set({ upiId, payee })
+        .then(() => toast('✅ Payment settings saved'))
+        .catch(e => toast('Could not save: ' + (e.code || e.message)));
+}
+function approveRequest(id){
+    const r = requests.find(x => x.id === id);
+    if(!r || r.status !== 'pending') return;
+    const b = batches.find(x => x.id === r.batchId);
+    const days = b ? Number(b.days) || 365 : 365;
+    const now = Date.now();
+    const cur = purchasesAll.find(p => p.uid === r.uid && p.batchId === r.batchId);
+    const base = cur && cur.expiry > now ? cur.expiry : now;
+    const wb = db.batch();
+    wb.set(db.collection('users').doc(r.uid).collection('purchases').doc(r.batchId), {
+        batchId: r.batchId, purchasedAt: now, expiry: base + days * DAY_MS, amount: r.amount, via: 'upi'
+    });
+    wb.update(db.collection('payRequests').doc(id), { status: 'approved', decidedAt: now });
+    wb.commit().then(() => toast('✅ Approved, batch unlocked'))
+        .catch(e => toast('Failed: ' + (e.code || e.message)));
+}
+function rejectRequest(id){
+    if(!confirm('Reject this payment request?')) return;
+    db.collection('payRequests').doc(id).update({ status: 'rejected', decidedAt: Date.now() })
+        .then(() => toast('Request rejected'))
+        .catch(e => toast('Failed: ' + (e.code || e.message)));
+}
+
+/* ==================================================================
+   13. ADMIN — STUDENTS
+================================================================== */
+function renderAdminStudents(){
+    const box = document.getElementById('admin-students');
+    if(!box) return;
+
+    let html = `<div class="admin-card">
+        <h3><i class="fas fa-users" style="color:#0ea5e9;"></i> Registered Students (${users.length})</h3>`;
+
+    if(!users.length){
+        html += `<div class="mini-empty"><i class="fas fa-user-slash"></i><p>No students registered yet</p></div>`;
+    } else {
+        html += users.slice().reverse().map(u => {
+            const active = (u.purchases || []).filter(p => p.expiry > Date.now()).length;
+            return `
+            <div class="student-row">
+                <div class="conv-avatar">${esc(initials(u.name))}</div>
+                <div class="conv-body">
+                    <div class="conv-name">${esc(u.name)}</div>
+                    <div class="conv-preview">${esc(displayId(u.email))}</div>
+                </div>
+                <div class="student-tag">${active} Active</div>
+            </div>`;
+        }).join('');
+    }
+
+    html += `</div>`;
+    box.innerHTML = html;
+}
+
+/* ==================================================================
+   14. EVENT LISTENERS & BOOT
+================================================================== */
+document.querySelectorAll('.auth-tab').forEach(t => {
+    t.addEventListener('click', () => authTab(t.dataset.tab));
+});
+
+document.getElementById('login-form').addEventListener('submit', e => {
+    e.preventDefault();
+    doLogin();
+});
+
+document.getElementById('register-form').addEventListener('submit', e => {
+    e.preventDefault();
+    doRegister();
+});
+
+document.getElementById('chatInput').addEventListener('keydown', e => {
+    if(e.key === 'Enter') sendChat();
+});
+
+document.getElementById('payOverlay').addEventListener('click', e => {
+    if(e.target.id === 'payOverlay') closePayment();
+});
+
+/* ==================================================================
+   ONE DEVICE AT A TIME
+   Naye device par login hote hi purana device automatic logout ho jata hai.
+================================================================== */
+async function ensureSession(user){
+    let sid = null;
+    try{ sid = localStorage.getItem(SID_KEY + user.uid); }catch(e){}
+    if(claimNext || !sid){
+        sid = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+        try{
+            await db.collection('sessions').doc(user.uid).set({ sid, at: Date.now() });
+        }catch(e){
+            console.error('session', e);
+            toast('Session setup failed (' + (e.code || 'error') + ')');
+        }
+        try{ localStorage.setItem(SID_KEY + user.uid, sid); }catch(e){}
+    }
+    claimNext = false;
+    mySid = sid;
+    listen(db.collection('sessions').doc(user.uid), snap => {
+        if(snap.metadata && snap.metadata.fromCache) return;
+        if(snap.exists && snap.data().sid !== mySid){
+            auth.signOut().then(() => toast('Your account was logged in on another device. You have been logged out.'));
+        }
+    }, 'session');
+}
+
+/* boot */
+window.addEventListener('load', initSlider);
+
+if(FB_OK){
+    auth.onAuthStateChanged(async user => {
+        stopListeners();
+        authUser = user;
+        if(!user){
+            isAdminUser = false;
+            showAuthScreen();
+            return;
+        }
+        let adm = !!user.email && user.email.toLowerCase() === ADMIN_EMAIL;
+        if(!adm){
+            try{ adm = (await db.collection('admins').doc(user.uid).get()).exists; }catch(e){ adm = false; }
+        }
+        if(auth.currentUser !== user) return;
+        await ensureSession(user);
+        if(auth.currentUser !== user) return;
+        isAdminUser = adm;
+        listenBatches();
+        if(isAdminUser){ startAdmin(); openAdmin(); }
+        else { startStudent(user.uid); openStudent(); }
+    });
+} else {
+    window.addEventListener('load', () => authMsg('Could not load Firebase, check internet', 'error'));
+}
+</script>
+
+</body>
+</html>
